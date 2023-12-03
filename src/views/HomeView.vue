@@ -1,9 +1,9 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+// TODO: Anything to do here?
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <p><strong>TODO:</strong>Render D-Low.com &lt;HomePage&gt; component</p>
   </main>
 </template>

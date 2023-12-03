@@ -1,23 +1,40 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '@/views/HomeView.vue';
+import ListingView from '@/views/ListingView.vue';
+import PostListingView from '@/views/PostListingView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
       component: HomeView
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
-  ]
-})
+      path: '/04-Central_America/:year',
+      component: PostListingView,
+    },
+    {
+      path: '/02-South_America/:month',
+      component: PostListingView,
+    },
+    {
+      path: '/03-CDT/:month',
+      component: PostListingView,
+    },
+    {
+      path: '/:place/:year/:season',
+      component: PostListingView,
+    },
+    {
+      path: '/:place/:year',
+      component: ListingView,
+    },
+    {
+      path: '/:place',
+      component: ListingView,
+    },
+  ],
+});
 
-export default router
+export default router;
