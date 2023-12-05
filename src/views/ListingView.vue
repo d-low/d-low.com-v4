@@ -1,15 +1,31 @@
 <script setup>
-import { useRoute } from 'vue-router';
-const route = useRoute();
+import { RouterLink, useRoute } from 'vue-router';
+import { useContentStore } from '@/stores/content';
 
-const hasPlace = route.params.place;
-const hasYear = route.params.year;
+const route = useRoute();
+const store = useContentStore();
+
+const { path } = route;
+const links = store.getLinks({ descending: true, path });
 </script>
 
 <template>
-  <p><strong>TODO:</strong>Display Listing View!</p>
-  <ul>
-    <li v-if="hasPlace">Place: {{ $route.params.place }}</li>
-    <li v-if="hasYear">Year: {{ $route.params.year }}</li>
-  </ul>
+  <main>
+    <ul>
+      <li
+        v-for="link in links"
+        :key="link.href"
+      >
+        <RouterLink :to="link.href">
+          <img
+            :src="link.image"
+            width="300"
+          >
+          <strong style="display: block;">
+            {{ link.name }}
+          </strong>
+        </RouterLink>
+      </li>
+    </ul>
+  </main>
 </template>
