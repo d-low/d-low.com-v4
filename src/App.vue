@@ -1,9 +1,17 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router';
+import { ref, watch } from 'vue';
+
+const path = ref(null);
+const route = useRoute();
+
+path.value = route.path;
+
+watch(() => route.path, () => { path.value = route.path; });
 </script>
 
 <template>
-  <RouterView />
+  <RouterView :key="path"/>
 </template>
 
 <style scoped>
