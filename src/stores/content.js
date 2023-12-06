@@ -39,11 +39,11 @@ export const useContentStore = defineStore('content', () => {
       try {
         return datePart[1].replace(/_/g, ' ').replace(/ (\d\d\d\d)$/, ', $1');
       } catch (exp) {
-        return '';
+        // Do nothing, just return an empty string
       }
-    } else {
-      return '';
     }
+
+    return '';
   };
 
   /**
@@ -54,9 +54,7 @@ export const useContentStore = defineStore('content', () => {
    * Colorado-2016 -> Colorado 2016
    * 01-A_Few_Snowy_Adventures-Apr_11_2017 -> A Few Snowy Adventures Apr 11 2017
    */
-  const prettifyTitle = (keyName) => {
-    return keyName.replace(/^\d\d-/, '').replace(/[-_]/g, ' ');
-  };
+  const prettifyTitle = (keyName) => keyName.replace(/^\d\d-/, '').replace(/[-_]/g, ' ');
 
   /**
    * Remove initial digits, split on the title/date separator and keeping the title, and then
@@ -65,9 +63,10 @@ export const useContentStore = defineStore('content', () => {
    * 05-Colorado -> Colorado
    * 01-A_Few_Snowy_Adventures-Apr_11_2017 -> A Few Snowy Adventures
    */
-  const prettifyTitleOnly = (keyName) => {
-    return keyName.replace(/^\d\d-/, '').split(/-/)[0].replace(/_/g, ' ');
-  };
+  const prettifyTitleOnly = (keyName) => keyName
+    .replace(/^\d\d-/, '')
+    .split(/-/)[0]
+    .replace(/_/g, ' ');
 
   /**
    * @description Construct an array of links, one for each child node of the current node that is
@@ -89,8 +88,6 @@ export const useContentStore = defineStore('content', () => {
       makeTitlePretty = true,
     } = payload;
 
-    const links = [];
-
     const generateRandomNumber = (max, min) =>
       Math.floor((Math.random() * ((max - min) + 1)) + min);
 
@@ -109,13 +106,11 @@ export const useContentStore = defineStore('content', () => {
 
     const node = getNode(path);
 
-    Object.keys(node).forEach((key) => {
-      links.push({
-        name: makeTitlePretty ? prettifyTitle(key) : key,
-        href: `${path === '/' ? '' : path}/${key}`,
-        image: findRandomImage(node[key]),
-      });
-    });
+    const links = Object.keys(node).map((key) => ({
+      name: makeTitlePretty ? prettifyTitle(key) : key,
+      href: `${path === '/' ? '' : path}/${key}`,
+      image: findRandomImage(node[key]),
+    }));
 
     // First sort links in ascending order by href
     links.sort((a, b) => {
@@ -160,13 +155,11 @@ export const useContentStore = defineStore('content', () => {
     }
 
     // Use content from d-low.com
-    const mappedLinks = links.map(link => ({
+    return links.map((link) => ({
       name: link.name,
       href: link.href,
       image: `${host}${link.image}`,
     }));
-
-    return mappedLinks;
   };
 
   /**
@@ -207,18 +200,16 @@ export const useContentStore = defineStore('content', () => {
    * @description Given link to a post or a path to a post populate and return a
    * post object.
    */
-  const getPost = (link) => {
-    return {
-      name: prettifyTitleOnly(link.name),
-      date: prettifyDateOnly(link.name),
-      href: link.href,
-      images: getPostImages(link.href),
-      async getText() {
-        const response = await fetch(`${host}/data${link.href}/index.html`);
-        return response.text();
-      },
-    };
-  };
+  const getPost = (link) => ({
+    name: prettifyTitleOnly(link.name),
+    date: prettifyDateOnly(link.name),
+    href: link.href,
+    images: getPostImages(link.href),
+    async getText() {
+      const response = await fetch(`${host}/data${link.href}/index.html`);
+      return response.text();
+    },
+  });
 
   const getPostListingLinks = (path) => {
     const links = getLinks({
@@ -228,13 +219,7 @@ export const useContentStore = defineStore('content', () => {
       makeTitlePretty: false,
     });
 
-    const postListingLinks = [];
-
-    links.forEach((link) => {
-      postListingLinks.push(getPost(link));
-    });
-
-    return postListingLinks;
+    return links.map((link) => getPost(link));
   };
 
   return {
@@ -245,6 +230,5 @@ export const useContentStore = defineStore('content', () => {
     // Actions
     getLinks,
     getPostListingLinks,
-    prettifyTitle,
    };
 })
