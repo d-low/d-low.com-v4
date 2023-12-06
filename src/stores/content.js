@@ -25,6 +25,28 @@ export const useContentStore = defineStore('content', () => {
   };
 
   /**
+   * Remove initial digits, split on the title/date separator and keeping the
+   * date, and then replace underscores with white space, and insert a comma
+   * after the day of the month.
+   * @example
+   * 05-Colorado -> ''
+   * 01-A_Few_Snowy_Adventures-Apr_11_2017 -> Apr 11, 2017
+   */
+  const prettifyDateOnly = function prettifyDate(keyName) {
+    const datePart = keyName.replace(/^\d\d-/, '').split(/-/);
+
+    if (datePart.length > 1) {
+      try {
+        return datePart[1].replace(/_/g, ' ').replace(/ (\d\d\d\d)$/, ', $1');
+      } catch (exp) {
+        return '';
+      }
+    } else {
+      return '';
+    }
+  };
+
+  /**
    * Remove initial digits, split on the title/date separator and keeping both the title and the
    * date, and then replace underscores with white space.
    * @example
@@ -34,6 +56,17 @@ export const useContentStore = defineStore('content', () => {
    */
   const prettifyTitle = (keyName) => {
     return keyName.replace(/^\d\d-/, '').replace(/[-_]/g, ' ');
+  };
+
+  /**
+   * Remove initial digits, split on the title/date separator and keeping the title, and then
+   * replace underscores with white space.
+   * @example
+   * 05-Colorado -> Colorado
+   * 01-A_Few_Snowy_Adventures-Apr_11_2017 -> A Few Snowy Adventures
+   */
+  const prettifyTitleOnly = (keyName) => {
+    return keyName.replace(/^\d\d-/, '').split(/-/)[0].replace(/_/g, ' ');
   };
 
   /**
@@ -136,6 +169,74 @@ export const useContentStore = defineStore('content', () => {
     return mappedLinks;
   };
 
+  /**
+   * @description Given a path to a post return an array of paths to images
+   * contained in that post.
+   * @param path Path to node
+   */
+  const getPostImages = function getPostImages(path) {
+    const node = getNode(path);
+    const images = [];
+
+    if (!Array.isArray(node.imgs)) {
+      return images;
+    }
+
+    node.imgs.forEach((img) => {
+      images.push(`${host}/data${path}/${img}`);
+    });
+
+    // Sort images in ascending order so they're displayed in chronological order
+    images.sort((a, b) => {
+      const aLower = a.toLowerCase();
+      const bLower = b.toLowerCase();
+
+      if (aLower < bLower) {
+        return -1;
+      } else if (aLower > bLower) {
+        return 1;
+      }
+
+      return 0;
+    });
+
+    return images;
+  };
+
+  /**
+   * @description Given link to a post or a path to a post populate and return a
+   * post object.
+   */
+  const getPost = (link) => {
+    return {
+      name: prettifyTitleOnly(link.name),
+      date: prettifyDateOnly(link.name),
+      href: link.href,
+      images: getPostImages(link.href),
+      async getText() {
+        const response = await fetch(`${host}/data${link.href}/index.html`);
+        return response.text();
+      },
+    };
+  };
+
+  const getPostListingLinks = (path) => {
+    const links = getLinks({
+      path,
+      includeMostRecent: false,
+      descending: true,
+      makeTitlePretty: false,
+    });
+
+    const postListingLinks = [];
+
+    links.forEach((link) => {
+      postListingLinks.push(getPost(link));
+    });
+
+    return postListingLinks;
+  };
+
   return {
     // Getters
     content,
@@ -143,6 +244,7 @@ export const useContentStore = defineStore('content', () => {
 
     // Actions
     getLinks,
+    getPostListingLinks,
     prettifyTitle,
    };
 })
