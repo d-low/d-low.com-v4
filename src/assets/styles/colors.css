@@ -7,3 +7,11 @@
   --link-color: #303030;
   --sky-blue: #6090d0;
 }
+
+.background-color-off-white {
+  background-color: var(--off-white);
+}
+
+.border-color-gray {
+  border-color: var(--border-gray);
+}
