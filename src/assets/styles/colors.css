@@ -8,6 +8,10 @@
   --sky-blue: #6090d0;
 }
 
+.background-color-gray {
+  background-color: var(--border-gray);
+}
+
 .background-color-off-white {
   background-color: var(--off-white);
 }
