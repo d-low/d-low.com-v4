@@ -9,6 +9,19 @@ export default defineConfig({
   build: {
     sourcemap: true
   },
+  css: {
+    modules: {
+      localsConvention: 'camelCase',
+      generateScopedName: (name, filename) => {
+        let componentName = filename
+          .replace(/\.vue.+$/, '')
+          .split('/')
+          .pop();
+
+        return `${componentName}__${name}`;
+      },
+    },
+  },
   plugins: [
     vue(),
     eslintPlugin(),
