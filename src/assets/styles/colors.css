@@ -19,3 +19,7 @@
 .border-color-gray {
   border-color: var(--border-gray);
 }
+
+.link-color {
+  color: var(--link-color);
+}

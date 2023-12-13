@@ -16,7 +16,7 @@ const isHomePage = computed(() => path.value === '/');
 <template>
   <SiteNavigation v-if="!isHomePage" />
   <!-- <SiteHeader /> -->
-  <main>
+  <main class="background-color-gray">
     <RouterView :key="path" />
   </main>
 </template>
