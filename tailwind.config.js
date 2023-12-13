@@ -11,7 +11,11 @@ module.exports = {
   prefix: 'tw-',
 
   theme: {
-    extend: {},
+    extend: {
+      aspectRatio: {
+        '4/3': '4 / 3',
+      },
+    },
   },
 }
 
