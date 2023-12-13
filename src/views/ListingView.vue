@@ -38,7 +38,6 @@ const linkNameClass = [
           <img
             class="tw-w-full tw-object-contain tw-aspect-4/3"
             :src="link.image"
-            width="300"
           >
           <strong :class="linkNameClass">
             {{ link.name }}
