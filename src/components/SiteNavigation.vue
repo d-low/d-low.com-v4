@@ -5,7 +5,10 @@ import { useCssModule } from 'vue'
 
 const $styles = useCssModule();
 const store = useContentStore();
-const links = store.getLinks({ path: '/' });
+const links = [
+  { name: 'Home', href: '/', image: '' },
+  ...store.getLinks({ path: '/' }),
+];
 
 const containerClass = [
   'tw-sticky tw-top-0 tw-left-0 tw-z-10',
