@@ -3,6 +3,10 @@
   src: url('../fonts/PassionOne-Regular.ttf');
 }
 
+body {
+  font-family: 'Trebuchet MS', Arial, sans-serif;
+}
+
 .font-passion-one-regular {
   font-family: PassionOne-Regular, Helvetica, sans-serif;
 }
