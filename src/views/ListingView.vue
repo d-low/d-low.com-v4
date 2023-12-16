@@ -6,6 +6,7 @@ import { RouterLink, useRoute } from 'vue-router';
 import { useContentStore } from '@/stores/content';
 import { useCssModule } from 'vue'
 import CardContainer from '@/components/CardContainer.vue';
+import PageTitle from '@/components/PageTitle.vue';
 
 const route = useRoute();
 const store = useContentStore();
@@ -27,7 +28,8 @@ const linkNameClass = [
 </script>
 
 <template>
-  <ul class="tw-w-full tw-pt-4 tw-px-2 lg:tw-px-4 tw-pb-8">
+  <PageTitle />
+  <ul class="tw-w-full tw-px-2 lg:tw-px-4 tw-pb-8">
     <li
       v-for="link in links"
       :key="link.href"
