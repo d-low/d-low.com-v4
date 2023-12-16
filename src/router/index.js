@@ -35,6 +35,13 @@ const router = createRouter({
       component: ListingView,
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+
+    return { behavior: 'smooth', top: 0 };
+  },
 });
 
 export default router;
