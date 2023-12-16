@@ -230,5 +230,7 @@ export const useContentStore = defineStore('content', () => {
     // Actions
     getLinks,
     getPostListingLinks,
+    prettifyTitle,
+    prettifyTitleOnly,
    };
 })
