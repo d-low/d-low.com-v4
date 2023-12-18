@@ -12,16 +12,15 @@ const links = [
 
 const containerClass = [
   'tw-sticky tw-top-0 tw-left-0 tw-z-10',
-  'tw-flex tw-justify-center',
-  'tw-w-full tw-h-20',
+  'tw-w-full tw-h-20 tw-overflow-scroll hide-scrollbar-on-mobile',
   'tw-border-y border-color-header-gray',
-  'tw-text-center',
   $styles.container,
 ];
 
 const listClass = [
-  'tw-flex tw-justify-center',
-  'tw-w-4/5 tw-h-full tw-px-2',
+  'tw-flex md:tw-justify-center',
+  'tw-w-max md:tw-w-full lg:tw-w-4/5 tw-h-full',
+  'tw-mx-auto tw-px-2',
 ];
 
 const listItemClass = [
@@ -34,7 +33,7 @@ const listItemClass = [
 
 const linkClass = [
   'tw-inline-block tw-w-full tw-h-full tw-px-4',
-  'tw-text-sm hover:tw-underline',
+  'tw-text-sm hover:tw-underline tw-whitespace-nowrap tw-text-center',
   $styles.link,
 ];
 </script>

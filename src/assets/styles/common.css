@@ -1,0 +1,14 @@
+.app {
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+.hide-scrollbar-on-mobile::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .hide-scrollbar-on-mobile::-webkit-scrollbar {
+    display: auto;
+  }
+}
