@@ -20,6 +20,10 @@
   border-color: var(--border-gray);
 }
 
+.border-color-light-gray {
+  border-color: var(--light-gray);
+}
+
 .border-color-header-gray {
   border-color: var(--header-gray);
 }

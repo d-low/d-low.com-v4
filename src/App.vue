@@ -1,6 +1,7 @@
 <script setup>
 import { RouterView, useRoute } from 'vue-router';
 import { computed, ref, watch } from 'vue';
+import SiteFooter from '@/components/SiteFooter.vue';
 import SiteNavigation from '@/components/SiteNavigation.vue';
 
 const path = ref(null);
@@ -19,4 +20,5 @@ const isHomePage = computed(() => path.value === '/');
   <main>
     <RouterView :key="path" />
   </main>
+  <SiteFooter />
 </template>
