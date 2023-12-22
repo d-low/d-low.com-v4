@@ -1,7 +1,6 @@
 <script setup>
 /**
  * @todo
- * - Layout and styles for isHomeView
  * - Lazy load images (SEE: https://medium.com/@tanay7/lazy-loading-images-basics-to-advanced-b69fa5568053)
  */
 import { RouterLink } from 'vue-router';
@@ -78,3 +77,4 @@ const linkNameClass = [
   }
 }
 </style>
+
