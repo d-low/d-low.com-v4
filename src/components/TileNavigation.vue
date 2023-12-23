@@ -37,8 +37,12 @@ const listItemClass = [
 
 const linkNameClass = [
   'tw-block',
-  props.isHomeView ? '' : 'tw-py-5',
-  props.isHomeView ? '' : 'tw-text-2xl md:tw-text-3xl lg:tw-text-4xl',
+  props.isHomeView
+    ? 'tw-pt-3 tw-pb-1 lg:tw-pb-0'
+    : 'tw-pt-5 tw-pb-1',
+  props.isHomeView
+    ? 'tw-text-xl md:tw-text-2xl lg:tw-text-xl'
+    : 'tw-text-2xl md:tw-text-3xl lg:tw-text-4xl',
   'tw-font-normal tw-text-center',
   'link-color font-passion-one-regular',
 ];
@@ -77,4 +81,3 @@ const linkNameClass = [
   }
 }
 </style>
-
