@@ -61,8 +61,8 @@ const linkClass = [
 .container {
   background-image: linear-gradient(
     to bottom,
-    rgba(153, 153, 153, 0.75),
-    rgba(255, 255, 255, 0.75)
+    rgba(153 153 153 / 75%),
+    rgba(255 255 255 / 75%)
   );
 }
 
