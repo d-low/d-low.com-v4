@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router';
+import { useCssModule } from 'vue';
 import { useContentStore } from '@/stores/content';
-import { useCssModule } from 'vue'
 
 const $styles = useCssModule();
 const store = useContentStore();
@@ -50,7 +50,7 @@ const linkClass = [
           :class="linkClass"
           :to="link.href"
         >
-          {{ link.name  }}
+          {{ link.name }}
         </RouterLink>
       </li>
     </ul>
@@ -59,7 +59,11 @@ const linkClass = [
 
 <style module>
 .container {
-  background-image: linear-gradient(to bottom, rgba(153, 153, 153, 0.75), rgba(255, 255, 255, 0.75));
+  background-image: linear-gradient(
+    to bottom,
+    rgba(153, 153, 153, 0.75),
+    rgba(255, 255, 255, 0.75)
+  );
 }
 
 .listItem {

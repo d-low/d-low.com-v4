@@ -1,6 +1,6 @@
 <script setup>
-import { useContentStore } from '@/stores/content';
 import { useCssModule } from 'vue';
+import { useContentStore } from '@/stores/content';
 import TileNavigation from '@/components/TileNavigation.vue';
 
 const $styles = useCssModule();

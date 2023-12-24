@@ -1,5 +1,6 @@
-import { computed } from 'vue'
-import { defineStore } from 'pinia'
+/* eslint import/prefer-default-export: off */
+import { computed } from 'vue';
+import { defineStore } from 'pinia';
 
 export const useContentStore = defineStore('content', () => {
   const host = 'https://www.d-low.com';
@@ -88,8 +89,8 @@ export const useContentStore = defineStore('content', () => {
       makeTitlePretty = true,
     } = payload;
 
-    const generateRandomNumber = (max, min) =>
-      Math.floor((Math.random() * ((max - min) + 1)) + min);
+    const generateRandomNumber = (max, min) => Math
+      .floor((Math.random() * ((max - min) + 1)) + min);
 
     const findRandomImage = (currentNode) => {
       if (Array.isArray(currentNode.imgs)) {
@@ -119,7 +120,7 @@ export const useContentStore = defineStore('content', () => {
 
       if (aHref < bHref) {
         return -1;
-      } else if (aHref > bHref) {
+      } if (aHref > bHref) {
         return 1;
       }
 
@@ -186,7 +187,7 @@ export const useContentStore = defineStore('content', () => {
 
       if (aLower < bLower) {
         return -1;
-      } else if (aLower > bLower) {
+      } if (aLower > bLower) {
         return 1;
       }
 
@@ -232,5 +233,5 @@ export const useContentStore = defineStore('content', () => {
     getPostListingLinks,
     prettifyTitle,
     prettifyTitleOnly,
-   };
-})
+  };
+});

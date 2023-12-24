@@ -12,15 +12,15 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 
-library.add(faEnvelope, faFacebook, faGithub, faLinkedin, faXTwitter);
-
 import App from './App.vue';
 import router from './router';
+
+library.add(faEnvelope, faFacebook, faGithub, faLinkedin, faXTwitter);
 
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
-app.component('font-awesome-icon', FontAwesomeIcon);
+app.component('FontAwesomeIcon', FontAwesomeIcon);
 
 app.mount('#app');

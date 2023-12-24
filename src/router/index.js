@@ -8,7 +8,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/04-Central_America/:year',

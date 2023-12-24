@@ -15,5 +15,7 @@ const pageTitleClass = [
 </script>
 
 <template>
-  <h2 :class="pageTitleClass">{{  pageTitle  }}</h2>
+  <h2 :class="pageTitleClass">
+    {{ pageTitle }}
+  </h2>
 </template>

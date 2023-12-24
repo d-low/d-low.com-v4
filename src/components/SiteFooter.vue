@@ -52,7 +52,7 @@ const containerClass = [
               class="tw-w-8 tw-h-8"
               :icon="link.icon"
             />
-            <span></span>
+            <span />
           </a>
         </li>
       </ul>

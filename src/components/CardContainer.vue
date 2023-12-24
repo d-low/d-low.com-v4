@@ -9,7 +9,6 @@ const containerClass = [
 
 <template>
   <div :class="containerClass">
-    <slot></slot>
+    <slot />
   </div>
 </template>
-

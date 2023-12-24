@@ -1,19 +1,20 @@
-import { fileURLToPath, URL } from 'node:url'
+/* eslint import/no-extraneous-dependencies: off */
+import { fileURLToPath, URL } from 'node:url';
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 import eslintPlugin from 'vite-plugin-eslint';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
-    sourcemap: true
+    sourcemap: true,
   },
   css: {
     modules: {
       localsConvention: 'camelCase',
       generateScopedName: (name, filename) => {
-        let componentName = filename
+        const componentName = filename
           .replace(/\.vue.+$/, '')
           .split('/')
           .pop();
@@ -28,7 +29,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  }
-})
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
+});
