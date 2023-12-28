@@ -38,6 +38,18 @@ const subtitleClass = [
   'font-passion-one-regular',
 ];
 
+const downArrowClass = [
+  'tw-absolute tw-block',
+  'tw-bottom-20 md:tw-bottom-4 tw-left-1/2',
+  'tw--translate-x-1/2',
+  'tw-w-40 md:tw-w-48 lg:tw-w-64 tw-h-12',
+  'after:tw-absolute after:tw-w-1/2 after:tw-h-2 after:tw-rounded after:tw-bottom-0',
+  'before:tw-absolute before:tw-w-1/2 before:tw-h-2 before:tw-rounded before:tw-bottom-0',
+  'tw-cursor-pointer',
+  'color-header-gray',
+  $styles.downArrow,
+];
+
 const scrollToNextSection = () => {
   // TODO: Emit an event to inform the parent component to scroll down to the next section.
 };
@@ -55,6 +67,7 @@ const scrollToNextSection = () => {
     </h1>
     <button
       v-if="isHomeView"
+      :class="downArrowClass"
       @click="scrollToNextSection"
     />
   </header>
@@ -83,4 +96,25 @@ const scrollToNextSection = () => {
     right: 5%;
   }
 }
+
+.downArrow::before,
+.downArrow::after {
+  background-color: var(--header-gray);
+  box-shadow: 2px 3px 3px rgba(0 0 0 / 30%);
+}
+
+/* Left half of down arrow */
+.downArrow::before {
+  right: calc(50% - 0.125rem);
+  transform: rotate(20deg);
+  transform-origin: 100% 50%;
+}
+
+/* Right half of down arrow */
+.downArrow::after {
+  left: calc(50% - 0.125rem);
+  transform: rotate(-20deg);
+  transform-origin: 0% 50%;
+}
+
 </style>
