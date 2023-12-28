@@ -28,6 +28,10 @@
   border-color: var(--header-gray);
 }
 
+.color-header-gray {
+  color: var(--header-gray);
+}
+
 .link-color {
   color: var(--link-color);
 }
