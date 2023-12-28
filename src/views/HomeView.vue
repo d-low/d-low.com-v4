@@ -1,6 +1,7 @@
 <script setup>
 import { useCssModule } from 'vue';
 import { useContentStore } from '@/stores/content';
+import SiteHeader from '@/components/SiteHeader.vue';
 import TileNavigation from '@/components/TileNavigation.vue';
 
 const $styles = useCssModule();
@@ -17,6 +18,7 @@ const navigationClass = 'tw-mx-auto tw-w-11/12 md:tw-w-9/12 lg:tw-w-3/4';
 </script>
 
 <template>
+  <SiteHeader :is-home-view="true" />
   <section :class="navigationContainerClass">
     <TileNavigation
       :class="navigationClass"

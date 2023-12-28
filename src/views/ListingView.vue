@@ -2,6 +2,7 @@
 import { useRoute } from 'vue-router';
 import { useContentStore } from '@/stores/content';
 import PageTitle from '@/components/PageTitle.vue';
+import SiteHeader from '@/components/SiteHeader.vue';
 import TileNavigation from '@/components/TileNavigation.vue';
 
 const route = useRoute();
@@ -17,6 +18,7 @@ const containerClass = [
 </script>
 
 <template>
+  <SiteHeader />
   <PageTitle />
   <section :class="containerClass">
     <TileNavigation
