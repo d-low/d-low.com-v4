@@ -34,6 +34,7 @@ const listItemClass = [
 const linkClass = [
   'tw-inline-block tw-w-full tw-h-full tw-px-4',
   'tw-text-sm hover:tw-underline tw-whitespace-nowrap tw-text-center',
+  'tw-font-bold',
   $styles.link,
 ];
 </script>
