@@ -10,7 +10,7 @@ const pageTitle = store.prettifyTitle(page);
 const pageTitleClass = [
   'tw-my-8',
   'tw-text-center tw-text-4xl md:tw-text-5xl lg:tw-text-6xl',
-  'font-passion-one-regular',
+  'font-passion-one-regular heading-text-shadow',
 ];
 </script>
 
