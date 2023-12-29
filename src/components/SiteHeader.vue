@@ -1,5 +1,6 @@
 <script setup>
-import { useCssModule } from 'vue';
+import { ref, onMounted, useCssModule } from 'vue';
+import { useDebounceFn, useEventListener, useThrottleFn } from '@vueuse/core';
 
 const props = defineProps({
   isHomeView: {
@@ -7,12 +8,17 @@ const props = defineProps({
     default: false,
   },
 });
+
+const heading = ref(null);
+const headingHeight = ref(0);
+const headingStyle = ref({ display: 'block', opacity: 1 });
+
 const $styles = useCssModule();
 
 const containerClass = [
   'tw-relative',
   props.isHomeView ? 'tw-h-screen' : 'tw-h-48',
-  'tw-bg-cover tw-bg-no-repeat',
+  'tw-bg-cover tw-bg-no-repeat lg:tw-bg-fixed',
   'color-header-gray',
   $styles.container,
 ];
@@ -51,13 +57,53 @@ const downArrowClass = [
 ];
 
 const scrollToNextSection = () => {
-  // TODO: Emit an event to inform the parent component to scroll down to the next section.
+  // TODO: Emit an event to inform the parent component to scroll down to the next section. Or
+  // calculate the height of the rendered content and scroll down below it. TBD...
 };
+
+/**
+ * Set the heading height when the component is mounted and also when the page is resized. This is
+ * done for efficiency so that the heading height isn't calculated every 16ms when setting the
+ * heading opacity as the page is scrolled.
+ */
+const setHeadingHeight = () => {
+  headingHeight.value = parseInt(window.getComputedStyle(heading.value).height, 10);
+};
+
+/**
+ * @todo When using Vue's reactivity, the setHeadingOpacity() method is called at most once every
+ * 16ms as the window scrolls by useThrottleFn(). This works well enough, but should
+ * requestAnimationFrame() be used to ensure smoother animations? How would that work with Vue's
+ * built in reactivity? And is it really necessary?
+ * @see https://hacks.mozilla.org/2011/08/animating-with-javascript-from-setinterval-to-requestanimationframe/
+ */
+const setHeadingOpacity = () => {
+  const opacity = 1 - (window.scrollY / (window.innerHeight - headingHeight.value));
+
+  // Hide the logo when no longer visible so it doesn't block elements now visible above the fold.
+  if (opacity < 0) {
+    headingStyle.value.display = 'none';
+    headingStyle.value.opacity = 0;
+  } else {
+    headingStyle.value.display = 'block';
+    headingStyle.value.opacity = opacity;
+  }
+};
+
+if (props.isHomeView) {
+  onMounted(setHeadingHeight);
+  useEventListener(window, 'resize', useDebounceFn(setHeadingHeight));
+  useEventListener(window, 'scroll', useThrottleFn(setHeadingOpacity, 16));
+}
 </script>
 
 <template>
   <header :class="containerClass">
-    <h1 :class="headingClass">
+    <h1
+      ref="heading"
+      :class="headingClass"
+      :style="headingStyle"
+    >
       <span :class="titleClass">
         d-low.com
       </span>
