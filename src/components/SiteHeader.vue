@@ -9,6 +9,7 @@ const props = defineProps({
   },
 });
 
+const container = ref(null);
 const heading = ref(null);
 const headingHeight = ref(0);
 const headingStyle = ref({ display: 'block', opacity: 1 });
@@ -57,8 +58,8 @@ const downArrowClass = [
 ];
 
 const scrollToNextSection = () => {
-  // TODO: Emit an event to inform the parent component to scroll down to the next section. Or
-  // calculate the height of the rendered content and scroll down below it. TBD...
+  const { height } = container.value.getBoundingClientRect();
+  window.scrollTo({ behavior: 'smooth', top: height });
 };
 
 /**
@@ -98,7 +99,10 @@ if (props.isHomeView) {
 </script>
 
 <template>
-  <header :class="containerClass">
+  <header
+    ref="container"
+    :class="containerClass"
+  >
     <h1
       ref="heading"
       :class="headingClass"
