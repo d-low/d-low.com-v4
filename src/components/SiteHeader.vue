@@ -19,7 +19,8 @@ const $styles = useCssModule();
 const containerClass = [
   'tw-relative',
   props.isHomeView ? 'tw-h-screen' : 'tw-h-48',
-  'tw-bg-cover tw-bg-no-repeat lg:tw-bg-fixed',
+  'tw-bg-cover tw-bg-no-repeat',
+  props.isHomeView ? 'tw-bg-fixed' : null,
   'color-header-gray',
   $styles.container,
 ];
