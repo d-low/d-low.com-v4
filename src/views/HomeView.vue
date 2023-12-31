@@ -1,6 +1,7 @@
 <script setup>
 import { useCssModule } from 'vue';
 import { useContentStore } from '@/stores/content';
+import AboutMe from '@/components/AboutMe.vue';
 import SiteHeader from '@/components/SiteHeader.vue';
 import TileNavigation from '@/components/TileNavigation.vue';
 
@@ -8,13 +9,23 @@ const $styles = useCssModule();
 const store = useContentStore();
 const links = store.getLinks({ path: '/', includeMostRecent: true });
 
-const navigationContainerClass = [
+const sectionClass = [
   'tw-flex tw-justify-center',
   'tw-pt-4 tw-px-2 tw-pb-8 md:tw-pt-8 md:tw-px-4 md:tw-pb-12',
+];
+
+const navigationContainerClass = [
+  ...sectionClass,
   'tw-bg-cover tw-bg-center tw-bg-no-repeat',
   $styles.navigationContainer,
 ];
+
 const navigationClass = 'tw-mx-auto tw-w-11/12 md:tw-w-9/12 lg:tw-w-3/4';
+
+const aboutMeClass = [
+  ...sectionClass,
+  'background-color-off-white',
+];
 </script>
 
 <template>
@@ -25,6 +36,9 @@ const navigationClass = 'tw-mx-auto tw-w-11/12 md:tw-w-9/12 lg:tw-w-3/4';
       :is-home-view="true"
       :links="links"
     />
+  </section>
+  <section :class="aboutMeClass">
+    <AboutMe />
   </section>
 </template>
 
