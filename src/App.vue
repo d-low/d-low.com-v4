@@ -20,7 +20,7 @@ watch(() => route.path, () => { path.value = route.path; });
 const isHomePage = computed(() => path.value === '/');
 
 const containerClass = computed(() => [
-  'tw-mb-8',
+  'tw-pb-8',
   isHomePage.value ? 'background-color-off-white' : 'background-color-gray',
   $styles.container,
 ]);
