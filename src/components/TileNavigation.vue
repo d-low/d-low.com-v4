@@ -6,6 +6,7 @@
 import { RouterLink } from 'vue-router';
 import { useCssModule } from 'vue';
 import CardContainer from '@/components/CardContainer.vue';
+import ImageLazyFade from '@/components/ImageLazyFade.vue';
 
 const props = defineProps({
   isHomeView: {
@@ -57,10 +58,10 @@ const linkNameClass = [
     >
       <CardContainer>
         <RouterLink :to="link.href">
-          <img
+          <ImageLazyFade
             class="tw-w-full tw-object-contain tw-aspect-4/3"
             :src="link.image"
-          >
+          />
           <strong :class="linkNameClass">
             {{ link.name }}
           </strong>

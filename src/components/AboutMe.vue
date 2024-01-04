@@ -4,6 +4,12 @@
 // 2. Update copy?
 // 3. Consistent image names (separate commit)
 
+import { useCssModule } from 'vue';
+import ImageLazyFade from '@/components/ImageLazyFade.vue';
+import OnTheSummit from '@/assets/images/2021-09-01-02-OnTheSummit.jpg';
+import TopOfMiddleburySkiBowl from '@/assets/images/2023-11-11-01-TopOfMiddleburySkiBowl.jpg';
+
+const $style = useCssModule();
 const containerClass = 'md:tw-flex md:tw-flex-wrap md:tw-justify-center';
 const firstColumnClass = 'md:tw-w-1/2 xl:tw-w-1/3 tw-mb-4';
 const secondColumnClass = 'md:tw-w-1/2 xl:tw-w-1/3 tw-mb-4 md:tw-pl-4 xl:tw-px-8';
@@ -13,6 +19,7 @@ const imageContainerClass = [
   'tw-block tw-p-4',
   'tw-border tw-shadow-md',
   'border-color-gray background-color-off-white',
+  $style.imageContainer,
 ];
 
 const textClass = 'tw-mb-4 tw-text-sm tw-leading-7 first-letter:tw-text-5xl';
@@ -21,11 +28,11 @@ const textClass = 'tw-mb-4 tw-text-sm tw-leading-7 first-letter:tw-text-5xl';
 <template>
   <article :class="containerClass">
     <figure :class="[firstColumnClass, imageContainerClass]">
-      <img
+      <ImageLazyFade
         alt="On the summit of Mt. Bierstadt"
         :class="$style.image"
-        src="@/assets/images/2021-09-01-02-OnTheSummit.jpg"
-      >
+        :src="OnTheSummit"
+      />
     </figure>
     <div :class="secondColumnClass">
       <p :class="textClass">
@@ -40,16 +47,20 @@ const textClass = 'tw-mb-4 tw-text-sm tw-leading-7 first-letter:tw-text-5xl';
       </p>
     </div>
     <figure :class="[thirdColumnClass, imageContainerClass]">
-      <img
+      <ImageLazyFade
         alt="Top of Middlebury Ski Bowl"
         :class="['md:tw-max-h-96', $style.image]"
-        src="@/assets/images/2023-11-11-01-TopOfMiddleburySkiBowl.jpg"
-      >
+        :src="TopOfMiddleburySkiBowl"
+      />
     </figure>
   </article>
 </template>
 
 <style module>
+.imageContainer {
+  min-height: 18rem;
+}
+
 .image {
   aspect-ratio: 4 / 3;
 }
