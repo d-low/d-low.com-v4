@@ -1,8 +1,4 @@
 <script setup>
-/**
- * @todo
- * - Lazy load images (SEE: https://medium.com/@tanay7/lazy-loading-images-basics-to-advanced-b69fa5568053)
- */
 import { RouterLink } from 'vue-router';
 import { useCssModule } from 'vue';
 import CardContainer from '@/components/CardContainer.vue';
@@ -22,7 +18,8 @@ const props = defineProps({
 const $styles = useCssModule();
 
 const listClass = [
-  'tw-grid tw-grid-rows-1 tw-grid-cols-1',
+  'tw-grid tw-grid-rows-1 tw-grid-cols-1 tw-justify-items-center',
+  'tw-w-full',
   props.isHomeView
     ? ' md:tw-grid-rows-2 md:tw-grid-cols-2 lg:tw-grid-cols-3'
     : '',
@@ -32,7 +29,7 @@ const listClass = [
 ];
 
 const listItemClass = [
-  'tw-block',
+  'tw-block tw-w-full tw-aspect-4/3',
   props.isHomeView ? '' : $styles.listItem,
 ];
 
@@ -56,7 +53,7 @@ const linkNameClass = [
       :key="link.href"
       :class="listItemClass"
     >
-      <CardContainer>
+      <CardContainer class="tw-aspect-4/3">
         <RouterLink :to="link.href">
           <ImageLazyFade
             class="tw-w-full tw-object-contain tw-aspect-4/3"

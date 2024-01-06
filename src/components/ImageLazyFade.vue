@@ -33,7 +33,10 @@ onMounted(() => {
   <img
     ref="img"
     loading="lazy"
-    :class="['tw-transition-opacity tw-duration-500', imgOpacity]"
+    :class="[
+      'tw-transition-opacity tw-duration-500 tw-object-cover',
+      imgOpacity,
+    ]"
     :src="src"
   >
 </template>
