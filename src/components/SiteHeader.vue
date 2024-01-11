@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted, useCssModule } from 'vue';
 import { useDebounceFn, useEventListener, useThrottleFn } from '@vueuse/core';
+import backgroundImageSm from '@/assets/images/wendy-descending-saddle-between-watrous-and-woods.jpg';
+import backgroundImageLg from '@/assets/images/wendy-descending-saddle-between-watrous-and-woods-large.jpg';
 
 const props = defineProps({
   isHomeView: {
@@ -16,17 +18,29 @@ const headingStyle = ref({ display: 'block', opacity: 1 });
 
 const $styles = useCssModule();
 
+const backgroundImageClass = [
+  props.isHomeView ? 'tw-fixed' : 'tw-absolute',
+  'tw-z-0',
+  'tw-w-full tw-h-full',
+  'tw-transition-opacity tw-duration-500',
+  'tw-object-cover',
+].join(' ');
+
+const haveHeroImagesLoaded = () => window?.sessionStorage?.getItem('heroImagesLoaded') !== null;
+const backgroundImageOpacity = ref(haveHeroImagesLoaded() ? 'tw-opacity-100' : 'tw-opacity-0');
+
+const backgroundImgSrcSet = `${backgroundImageSm} 700w, ${backgroundImageLg} 1900w`;
+
 const containerClass = [
   'tw-relative',
   props.isHomeView ? 'tw-h-screen' : 'tw-h-48',
-  'tw-bg-cover tw-bg-no-repeat',
-  props.isHomeView ? 'tw-bg-fixed' : null,
   'color-header-gray',
-  $styles.container,
+  props.isHomeView ? $styles.containerHomeView : null,
 ];
 
 const headingClass = [
-  props.isHomeView ? 'tw-absolute tw-t-0 md:tw-fixed' : null,
+  'tw-absolute tw-t-0',
+  props.isHomeView ? 'md:tw-fixed' : null,
   'tw-w-full',
   'tw-text-center',
   props.isHomeView ? 'md:tw-text-right' : null,
@@ -57,6 +71,34 @@ const downArrowClass = [
   'color-header-gray',
   $styles.downArrow,
 ];
+
+const fadeInHeroImage = () => {
+  let heroImageLoadedCount = 0;
+
+  const handleImgLoaded = () => {
+    if (heroImageLoadedCount === 2 || haveHeroImagesLoaded()) {
+      window?.sessionStorage?.setItem('heroImagesLoaded', true);
+      backgroundImageOpacity.value = 'tw-opacity-100';
+      return true;
+    }
+
+    return false;
+  };
+
+  if (haveHeroImagesLoaded()) {
+    return;
+  }
+
+  [backgroundImageSm, backgroundImageLg].forEach((backgroundImage) => {
+    const img = new Image();
+    img.onload = () => {
+      heroImageLoadedCount += 1;
+      handleImgLoaded();
+    };
+    img.crossOrigin = true;
+    img.src = backgroundImage;
+  });
+};
 
 const scrollToNextSection = () => {
   const { height } = container.value.getBoundingClientRect();
@@ -92,10 +134,17 @@ const setHeadingOpacity = () => {
   }
 };
 
+const handleOnMounted = () => {
+  setHeadingHeight();
+  fadeInHeroImage();
+};
+
 if (props.isHomeView) {
-  onMounted(setHeadingHeight);
+  onMounted(handleOnMounted);
   useEventListener(window, 'resize', useDebounceFn(setHeadingHeight));
   useEventListener(window, 'scroll', useThrottleFn(setHeadingOpacity, 16));
+} else {
+  onMounted(fadeInHeroImage);
 }
 </script>
 
@@ -104,6 +153,15 @@ if (props.isHomeView) {
     ref="container"
     :class="containerClass"
   >
+    <img
+      :class="[
+        backgroundImageClass,
+        backgroundImageOpacity,
+      ]"
+      sizes="100vw"
+      :srcset="backgroundImgSrcSet"
+      :src="backgroundImageLg"
+    >
     <h1
       ref="heading"
       :class="headingClass"
@@ -125,17 +183,13 @@ if (props.isHomeView) {
 </template>
 
 <style module>
-.container {
-  background-image:
-    url('@/assets/images/wendy-descending-saddle-between-watrous-and-woods.jpg');
-  background-position: 50% 0;
-}
-
-@media (min-width: 768px) {
-  .container {
-    background-image:
-      url('@/assets/images/wendy-descending-saddle-between-watrous-and-woods-large.jpg');
-  }
+/**
+ * Use clip-path on the parent element and position fixed on the image to mimic the native
+ * background-attachment styles for an <img> element.
+ * @see https://stackoverflow.com/questions/33550450/how-to-use-css-background-attachment-in-img-tag
+ */
+.containerHomeView {
+  clip-path: inset(0);
 }
 
 .headingHomeView {
