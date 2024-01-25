@@ -10,6 +10,11 @@ const store = useContentStore();
 
 const { path } = route;
 const postListingLinks = store.getPostListingLinks(path);
+
+const listItemClass = [
+  'lg:tw-max-w-4xl lg:tw-mx-auto',
+  'tw-mb-10 md:tw-mb-14 lg:tw-mb-20',
+];
 </script>
 
 <template>
@@ -19,11 +24,11 @@ const postListingLinks = store.getPostListingLinks(path);
     <li
       v-for="(postListingLink, index) in postListingLinks"
       :key="postListingLink.href"
-      class="lg:tw-max-w-4xl lg:tw-mx-auto tw-mb-4 lg:tw-mb-20"
+      :class="listItemClass"
     >
       <PostListingLink
+        :hero-image-align-right="index % 2 === 0"
         :post-listing-link="postListingLink"
-        :reverse-layout="index % 2 === 1"
       />
     </li>
   </ul>
