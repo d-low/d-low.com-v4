@@ -36,8 +36,16 @@ const router = createRouter({
     },
   ],
   scrollBehavior(to, from, savedPosition) {
+    /* eslint no-console: off */
     if (savedPosition) {
       return savedPosition;
+    }
+
+    // Don't scroll to the top of the page if there is a hash in the URL. Instead, let the view
+    // component scroll to the element identified by the hash.
+
+    if (to.hash) {
+      return false;
     }
 
     return { behavior: 'smooth', top: 0 };

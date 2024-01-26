@@ -1,4 +1,5 @@
 <script setup>
+import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useContentStore } from '@/stores/content';
 import PageTitle from '@/components/PageTitle.vue';
@@ -11,18 +12,39 @@ const store = useContentStore();
 const { path } = route;
 const postListingLinks = store.getPostListingLinks(path).reverse();
 
+const listClass = 'tw-w-full tw-pt-4 tw-px-2 lg:tw-px-4 tw-pb-8 tw-snap-y';
+
 const listItemClass = [
   'lg:tw-max-w-4xl lg:tw-mx-auto',
   'tw-mb-10 md:tw-mb-14 lg:tw-mb-20',
+  'tw-scroll-mt-32',
 ];
+
+const getPostListingLinkId = (href) => href.split('/').pop();
+
+onMounted(() => window.setTimeout(() => {
+  const { hash } = window.location;
+
+  if (hash) {
+    const id = hash.replace('#', '');
+    const el = document.getElementById(id);
+
+    el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
+    });
+  }
+}, 250));
 </script>
 
 <template>
   <SiteHeader />
   <PageTitle />
-  <ul class="tw-w-full tw-pt-4 tw-px-2 lg:tw-px-4 tw-pb-8">
+  <ul :class="listClass">
     <li
       v-for="(postListingLink, index) in postListingLinks"
+      :id="getPostListingLinkId(postListingLink.href)"
       :key="postListingLink.href"
       :class="listItemClass"
     >
