@@ -9,7 +9,7 @@ const route = useRoute();
 const store = useContentStore();
 
 const { path } = route;
-const postListingLinks = store.getPostListingLinks(path);
+const postListingLinks = store.getPostListingLinks(path).reverse();
 
 const listItemClass = [
   'lg:tw-max-w-4xl lg:tw-mx-auto',
