@@ -3,7 +3,6 @@
 
 /**
  * @todo
- * - View All +X more link
  * - Read More/Read Less link to show/hide cropped text
  * - Image viewer (Use FancyBox? https://fancyapps.com/resources/integration/#vue)
  */
@@ -27,6 +26,8 @@ const $style = useCssModule();
 
 const heroImage = props.postListingLink.images[0];
 const images = props.postListingLink.images.slice(1, 4);
+const canViewAllImages = props.postListingLink.images.length > 4;
+const moreImagesCount = `+${props.postListingLink.images.length - 4} more`;
 
 const titleClass = [
   'tw-text-center',
@@ -42,7 +43,7 @@ const dateClass = [
 ];
 
 const imageContainerClass = [
-  'tw-flex',
+  'tw-flex tw-relative',
   $style.imageContainer,
 ];
 
@@ -55,6 +56,20 @@ const imageListClass = [
   'tw-flex tw-flex-col',
   'tw-w-1/3 tw-h-full',
   props.heroImageAlignRight ? 'tw-order-1 tw-mr-0.5' : 'tw-order-2 tw-ml-0.5',
+];
+
+const viewAllImagesButtonClass = [
+  'tw-absolute tw-bottom-1.5',
+  props.heroImageAlignRight ? 'tw-right-0.5' : 'tw-left-0.5',
+  'tw-flex tw-flex-col tw-justify-center tw-items-center',
+  'tw-w-1/3 lg:tw-w-1/4 xl:tw-w-1/5',
+  'tw-h-1/3 lg:tw-h-1/4 xl:tw-h-1/5',
+  'tw-border',
+  props.heroImageAlignRight ? $style.viewAllImagesButtonRight : $style.viewAllImagesButtonLeft,
+  'tw-cursor-pointer',
+  'tw-font-bold tw-text-white',
+  $style.viewAllImagesButton,
+  'tw-transition-opacity hover:tw-opacity-75',
 ];
 
 const textContainer = [
@@ -97,6 +112,13 @@ onMounted(async () => {
           />
         </li>
       </ul>
+      <button
+        v-if="canViewAllImages"
+        :class="viewAllImagesButtonClass"
+      >
+        <strong>View All</strong>
+        <small>{{ moreImagesCount }}</small>
+      </button>
     </div>
     <div
       :class="textContainer"
@@ -120,6 +142,18 @@ onMounted(async () => {
   .imageContainer {
     max-height: 31.25rem;
   }
+}
+
+.viewAllImagesButton {
+  background: radial-gradient(at top left, rgba(36 41 46 / 15%), rgba(36 41 46 / 85%));
+}
+
+.viewAllImagesButtonLeft {
+  border-color: var(--black-pearl) var(--baltic-sea) var(--baltic-sea) var(--black-pearl);
+}
+
+.viewAllImagesButtonRight {
+  border-color: var(--baltic-sea) var(--black-pearl) var(--black-pearl) var(--baltic-sea);
 }
 
 .textContainer ::after {

@@ -1,10 +1,12 @@
 :root {
+  --baltic-sea: #363d45;
+  --black-pearl: #121417;
   --body-color: #444;
-  --off-white: #f9f9f9;
-  --light-gray: #ccc;
-  --header-gray: #202020;
   --border-gray: #999;
+  --header-gray: #202020;
+  --light-gray: #ccc;
   --link-color: #303030;
+  --off-white: #f9f9f9;
   --sky-blue: #6090d0;
 }
 
