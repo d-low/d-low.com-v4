@@ -3,10 +3,14 @@
 
 /**
  * @todo
- * - Read More/Read Less link to show/hide cropped text
  * - Image viewer (Use FancyBox? https://fancyapps.com/resources/integration/#vue)
  */
-import { useCssModule, onMounted, ref } from 'vue';
+import {
+  computed,
+  onMounted,
+  ref,
+  useCssModule,
+} from 'vue';
 import CardContainer from '@/components/CardContainer.vue';
 import ImageLazyFade from '@/components/ImageLazyFade.vue';
 
@@ -22,12 +26,24 @@ const props = defineProps({
 });
 
 const text = ref('');
+const textContainer = ref(null);
 const $style = useCssModule();
 
 const heroImage = props.postListingLink.images[0];
 const images = props.postListingLink.images.slice(1, 4);
 const canViewAllImages = props.postListingLink.images.length > 4;
 const moreImagesCount = `+${props.postListingLink.images.length - 4} more`;
+
+const isExpanded = ref(false);
+const buttonText = computed(() => (isExpanded.value ? 'Read Less' : 'Read More'));
+const textContainerStyle = computed(() => {
+  if (isExpanded.value) {
+    const height = parseInt(window.getComputedStyle(textContainer.value.firstChild).height, 10);
+    return { maxHeight: `${height + 32}px` };
+  }
+
+  return {};
+});
 
 const titleClass = [
   'tw-text-center',
@@ -72,17 +88,28 @@ const viewAllImagesButtonClass = [
   'tw-transition-opacity hover:tw-opacity-75',
 ];
 
-const textContainer = [
+const textContainerClass = computed(() => ([
   'tw-relative',
   'tw-w-11/12 tw-max-h-80',
-  'tw-mx-auto tw-mb-12',
+  'tw-mx-auto tw-mb-4',
   'tw-overflow-hidden',
+  'tw-transition-all',
   $style.textContainer,
+  isExpanded.value ? $style.textContainerExpanded : null,
+]));
+
+const buttonClass = [
+  'tw-block tw-mx-auto tw-mb-8',
+  'tw-text-lg tw-font-bold tw-underline',
 ];
 
 onMounted(async () => {
   text.value = await props.postListingLink.getText();
 });
+
+const handleButtonClick = () => {
+  isExpanded.value = !isExpanded.value;
+};
 </script>
 
 <template>
@@ -121,9 +148,17 @@ onMounted(async () => {
       </button>
     </div>
     <div
-      :class="textContainer"
+      ref="textContainer"
+      :class="textContainerClass"
+      :style="textContainerStyle"
       v-html="text"
     />
+    <button
+      :class="buttonClass"
+      @click="handleButtonClick"
+    >
+      {{ buttonText }}
+    </button>
   </CardContainer>
 </template>
 
@@ -165,6 +200,10 @@ onMounted(async () => {
   right: 0;
   text-align: right;
   width: 100%;
+}
+
+.textContainerExpanded ::after {
+  display: none;
 }
 
 .textContainer :global(.eventContainer) p > b:first-child {
