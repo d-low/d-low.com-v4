@@ -25,6 +25,8 @@ const props = defineProps({
   },
 });
 
+const $emit = defineEmits(['showImageSlider']);
+
 const text = ref('');
 const textContainer = ref(null);
 const $style = useCssModule();
@@ -66,6 +68,7 @@ const imageContainerClass = [
 const heroImageClass = [
   'tw-w-2/3 tw-h-full tw-pb-1',
   props.heroImageAlignRight ? 'tw-order-2 tw-ml-0.5' : 'tw-order-1 tw-mr-0.5',
+  'tw-cursor-pointer',
 ];
 
 const imageListClass = [
@@ -110,6 +113,13 @@ onMounted(async () => {
 const handleButtonClick = () => {
   isExpanded.value = !isExpanded.value;
 };
+
+const handleImageClick = (currentImage) => {
+  $emit('showImageSlider', {
+    currentImage,
+    images: props.postListingLink.images,
+  });
+};
 </script>
 
 <template>
@@ -126,22 +136,25 @@ const handleButtonClick = () => {
       <ImageLazyFade
         :src="heroImage"
         :class="heroImageClass"
+        @click="handleImageClick(0)"
       />
       <ul :class="imageListClass">
         <li
-          v-for="image in images"
+          v-for="(image, index) in images"
           :key="image"
           class="tw-h-1/3 tw-pb-1"
         >
           <ImageLazyFade
-            class="tw-w-full tw-h-full"
+            class="tw-w-full tw-h-full tw-cursor-pointer"
             :src="image"
+            @click="handleImageClick(index + 1)"
           />
         </li>
       </ul>
       <button
         v-if="canViewAllImages"
         :class="viewAllImagesButtonClass"
+        @click="handleImageClick(0)"
       >
         <strong>View All</strong>
         <small>{{ moreImagesCount }}</small>

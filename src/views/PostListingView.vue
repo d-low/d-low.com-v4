@@ -1,11 +1,17 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import { useContentStore } from '@/stores/content';
+import ImageSlider from '@/components/ImageSlider.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import PostListingLink from '@/components/PostListingLink.vue';
 import SiteHeader from '@/components/SiteHeader.vue';
 
+const imageSliderProps = reactive({
+  currentImage: 0,
+  images: null,
+  showImageSlider: false,
+});
 const route = useRoute();
 const store = useContentStore();
 
@@ -36,6 +42,16 @@ onMounted(() => window.setTimeout(() => {
     });
   }
 }, 250));
+
+const handleHideImageSlider = () => {
+  imageSliderProps.visible = false;
+};
+
+const handleShowImageSlider = ({ currentImage, images }) => {
+  imageSliderProps.currentImage = currentImage;
+  imageSliderProps.images = images;
+  imageSliderProps.visible = true;
+};
 </script>
 
 <template>
@@ -51,7 +67,12 @@ onMounted(() => window.setTimeout(() => {
       <PostListingLink
         :hero-image-align-right="index % 2 === 0"
         :post-listing-link="postListingLink"
+        @show-image-slider="handleShowImageSlider"
       />
     </li>
   </ul>
+  <ImageSlider
+    v-bind="imageSliderProps"
+    @hide-image-slider="handleHideImageSlider"
+  />
 </template>
