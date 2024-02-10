@@ -44,6 +44,8 @@ onMounted(() => window.setTimeout(() => {
 }, 250));
 
 const handleHideImageSlider = () => {
+  imageSliderProps.currentImage = 0;
+  imageSliderProps.images = null;
   imageSliderProps.visible = false;
 };
 

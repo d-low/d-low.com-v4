@@ -9,7 +9,7 @@ defineProps({
   },
   images: {
     type: Array,
-    default: null,
+    default() { return []; },
   },
   visible: {
     type: Boolean,
