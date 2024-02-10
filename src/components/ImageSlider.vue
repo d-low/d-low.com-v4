@@ -46,6 +46,7 @@ const closeButtonTextClass = [
 const listClass = [
   'tw-flex tw-items-center',
   'tw-h-full',
+  $style.list,
 ];
 
 const listItemClass = [
@@ -62,34 +63,44 @@ const imageClass = [
 </script>
 
 <template>
-  <div
-    v-show="visible"
-    :class="containerClass"
+  <transition
+    :enter-active-class="$style.visibleEnterActive"
+    :enter-from-class="$style.visibleEnterFrom"
+    :leave-active-class="$style.visibleLeaveActive"
+    :leave-to-class="$style.visibleLeaveTo"
   >
-    <button
-      :class="closeButtonClass"
-      @click="$emit('hideImageSlider')"
+    <div
+      v-show="visible"
+      :class="containerClass"
     >
-      <span :class="closeButtonTextClass">+</span>
-    </button>
-    <ul :class="listClass">
-      <li
-        v-for="(image, index) in images"
-        :key="index"
-        :class="listItemClass"
+      <button
+        :class="closeButtonClass"
+        @click="$emit('hideImageSlider')"
       >
-        <ImageLazyFade
-          :class="imageClass"
-          :src="image"
-        />
-      </li>
-    </ul>
-  </div>
+        <span :class="closeButtonTextClass">+</span>
+      </button>
+      <ul :class="listClass">
+        <li
+          v-for="(image, index) in images"
+          :key="index"
+          :class="listItemClass"
+        >
+          <ImageLazyFade
+            :class="imageClass"
+            :src="image"
+          />
+        </li>
+      </ul>
+    </div>
+  </transition>
 </template>
 
 <style module>
 .container {
   background-color: rgba(0 0 0 / 75%);
+
+  --transition-duration: 0.5s;
+  --transition-duration-half: 0.25s;
 }
 
 .listItem {
@@ -100,5 +111,32 @@ const imageClass = [
 
 .image {
   aspect-ratio: 4 / 3;
+}
+
+.visible-enter-active.container {
+  transition: opacity var(--transition-duration) ease;
+}
+
+.visible-leave-active.container {
+  transition: opacity var(--transition-duration) ease var(--transition-duration-half);
+}
+
+.visible-enter-active .list {
+  transition: transform var(--transition-duration-half) ease var(--transition-duration);
+}
+
+.visible-leave-active .list {
+  transition: transform var(--transition-duration-half) ease;
+}
+
+.visible-enter-from.container,
+.visible-leave-to.container {
+  opacity: 0;
+}
+
+.visible-enter-from .list,
+.visible-leave-to .list {
+  opacity: 1;
+  transform: translateY(-100%);
 }
 </style>
