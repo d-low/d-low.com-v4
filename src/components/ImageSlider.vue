@@ -60,6 +60,11 @@ const imageClass = [
   'tw-h-full tw-mx-auto',
   $style.image,
 ];
+
+const handleImageLoaded = (index) => {
+  // eslint-disable-next-line no-console
+  console.log(`ImageSlider.handleImageLoaded(): Image ${index} loaded!`);
+};
 </script>
 
 <template>
@@ -88,6 +93,7 @@ const imageClass = [
           <ImageLazyFade
             :class="imageClass"
             :src="image"
+            @image-loaded="handleImageLoaded(index)"
           />
         </li>
       </ul>

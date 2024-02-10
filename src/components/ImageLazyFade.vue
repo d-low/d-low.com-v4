@@ -12,12 +12,15 @@ defineProps({
   },
 });
 
+const $emit = defineEmits(['imageLoaded']);
+
 const img = ref(null);
 const imgOpacity = ref('tw-opacity-0');
 
 const handleLoaded = () => {
   imgOpacity.value = '';
   img.value.removeEventListener('load', handleLoaded);
+  $emit('imageLoaded');
 };
 
 onMounted(() => {
