@@ -25,6 +25,7 @@ const containerClass = [
   'tw-fixed tw-z-10 tw-inset-0',
   'tw-w-screen tw-h-screen',
   'tw-overflow-x-auto tw-overflow-y-hidden tw-overscroll-contain',
+  'tw-snap-mandatory tw-snap-x',
   $style.container,
 ];
 
@@ -50,6 +51,7 @@ const listClass = [
 const listItemClass = [
   'tw-w-screen',
   'tw-shrink-0',
+  'tw-snap-start',
   $style.listItem,
 ];
 
