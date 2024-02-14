@@ -1,10 +1,6 @@
 <script setup>
 /* eslint vue/no-v-html: off */
 
-/**
- * @todo
- * - Image viewer (Use FancyBox? https://fancyapps.com/resources/integration/#vue)
- */
 import {
   computed,
   onMounted,
@@ -31,8 +27,13 @@ const text = ref('');
 const textContainer = ref(null);
 const $style = useCssModule();
 
-const heroImage = props.postListingLink.images[0];
-const images = props.postListingLink.images.slice(1, 4);
+const heroImageIndex = props.heroImageAlignRight ? 3 : 0;
+const heroImage = props.postListingLink.images[heroImageIndex];
+
+const startImageIndex = props.heroImageAlignRight ? 0 : 1;
+const endImageIndex = props.heroImageAlignRight ? 3 : 4;
+const images = props.postListingLink.images.slice(startImageIndex, endImageIndex);
+
 const canViewAllImages = props.postListingLink.images.length > 4;
 const moreImagesCount = `+${props.postListingLink.images.length - 4} more`;
 
@@ -136,7 +137,7 @@ const handleImageClick = (currentImage) => {
       <ImageLazyFade
         :src="heroImage"
         :class="heroImageClass"
-        @click="handleImageClick(0)"
+        @click="handleImageClick(heroImageIndex)"
       />
       <ul :class="imageListClass">
         <li
@@ -147,14 +148,14 @@ const handleImageClick = (currentImage) => {
           <ImageLazyFade
             class="tw-w-full tw-h-full tw-cursor-pointer"
             :src="image"
-            @click="handleImageClick(index + 1)"
+            @click="() => handleImageClick(startImageIndex + index)"
           />
         </li>
       </ul>
       <button
         v-if="canViewAllImages"
         :class="viewAllImagesButtonClass"
-        @click="handleImageClick(0)"
+        @click="() => handleImageClick(0)"
       >
         <strong>View All</strong>
         <small>{{ moreImagesCount }}</small>

@@ -1,8 +1,8 @@
 <script setup>
-import { useCssModule } from 'vue';
+import { ref, useCssModule } from 'vue';
 import ImageLazyFade from '@/components/ImageLazyFade.vue';
 
-defineProps({
+const props = defineProps({
   currentImage: {
     type: Number,
     default: 0,
@@ -18,6 +18,8 @@ defineProps({
 });
 
 defineEmits(['hideImageSlider']);
+
+const listItems = ref(null);
 
 const $style = useCssModule();
 
@@ -65,6 +67,14 @@ const handleImageLoaded = (index) => {
   // eslint-disable-next-line no-console
   console.log(`ImageSlider.handleImageLoaded(): Image ${index} loaded!`);
 };
+
+const scrollToCurrentImage = () => {
+  listItems.value[props.currentImage].scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+    inline: 'start',
+  });
+};
 </script>
 
 <template>
@@ -73,6 +83,7 @@ const handleImageLoaded = (index) => {
     :enter-from-class="$style.visibleEnterFrom"
     :leave-active-class="$style.visibleLeaveActive"
     :leave-to-class="$style.visibleLeaveTo"
+    @after-enter="scrollToCurrentImage"
   >
     <div
       v-show="visible"
@@ -88,6 +99,7 @@ const handleImageLoaded = (index) => {
         <li
           v-for="(image, index) in images"
           :key="index"
+          ref="listItems"
           :class="listItemClass"
         >
           <ImageLazyFade
