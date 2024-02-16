@@ -6,6 +6,10 @@
 import { ref, onMounted } from 'vue';
 
 defineProps({
+  loading: {
+    type: String,
+    default: 'lazy',
+  },
   src: {
     type: String,
     required: true,
@@ -35,7 +39,7 @@ onMounted(() => {
 <template>
   <img
     ref="img"
-    loading="lazy"
+    :loading="loading"
     :class="[
       'tw-transition-opacity tw-duration-500 tw-object-cover',
       imgOpacity,
