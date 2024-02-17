@@ -1,4 +1,8 @@
 <script setup>
+/**
+ * @todo
+ * - Slide down the list _after_ the current image is loaded
+ */
 import { ref, useCssModule } from 'vue';
 import ImageLazyFade from '@/components/ImageLazyFade.vue';
 
@@ -17,11 +21,13 @@ const props = defineProps({
   },
 });
 
-defineEmits(['hideImageSlider']);
+const $emit = defineEmits(['hideImageSlider', 'imageSliderHidden']);
 
+const list = ref(null);
 const listItems = ref(null);
 
 const $style = useCssModule();
+const transitionDurationList = 250;
 
 const containerClass = [
   'tw-fixed tw-z-10 tw-inset-0',
@@ -49,6 +55,7 @@ const listClass = [
   'tw-flex tw-items-center',
   'tw-h-full',
   $style.list,
+  $style.listHidden,
 ];
 
 const listItemClass = [
@@ -63,17 +70,32 @@ const imageClass = [
   $style.image,
 ];
 
-const handleImageLoaded = (index) => {
-  // eslint-disable-next-line no-console
-  console.log(`ImageSlider.handleImageLoaded(): Image ${index} loaded!`);
+/**
+ * When the close button is clicked slide the list up and then emit the hide-image-slider event so
+ * the parent component hides the image slider.
+ */
+const handleCloseButtonClick = () => {
+  list.value.classList.add($style.listHidden);
+
+  window.setTimeout(() => {
+    $emit('hideImageSlider');
+  }, transitionDurationList);
 };
 
-const scrollToCurrentImage = () => {
-  listItems.value[props.currentImage].scrollIntoView({
-    behavior: 'smooth',
-    block: 'start',
-    inline: 'start',
-  });
+/**
+ * After the background has been faded slide the list down and then scroll the image image into
+ * view.
+ */
+const handleAfterEnter = () => {
+  list.value.classList.remove($style.listHidden);
+
+  window.setTimeout(() => {
+    listItems.value[props.currentImage].scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'start',
+    });
+  }, transitionDurationList);
 };
 </script>
 
@@ -83,7 +105,7 @@ const scrollToCurrentImage = () => {
     :enter-from-class="$style.visibleEnterFrom"
     :leave-active-class="$style.visibleLeaveActive"
     :leave-to-class="$style.visibleLeaveTo"
-    @after-enter="scrollToCurrentImage"
+    @after-enter="handleAfterEnter"
   >
     <div
       v-show="visible"
@@ -91,11 +113,14 @@ const scrollToCurrentImage = () => {
     >
       <button
         :class="closeButtonClass"
-        @click="$emit('hideImageSlider')"
+        @click="handleCloseButtonClick"
       >
         <span :class="closeButtonTextClass">+</span>
       </button>
-      <ul :class="listClass">
+      <ul
+        ref="list"
+        :class="listClass"
+      >
         <li
           v-for="(image, index) in images"
           :key="index"
@@ -104,8 +129,8 @@ const scrollToCurrentImage = () => {
         >
           <ImageLazyFade
             :class="imageClass"
+            :loading="index === currentImage ? 'eager' : 'lazy'"
             :src="image"
-            @image-loaded="handleImageLoaded(index)"
           />
         </li>
       </ul>
@@ -117,8 +142,26 @@ const scrollToCurrentImage = () => {
 .container {
   background-color: rgba(0 0 0 / 75%);
 
-  --transition-duration: 0.5s;
-  --transition-duration-half: 0.25s;
+  --transition-duration-background: 0.5s;
+  --transition-duration-list: 0.25s;
+}
+
+.visible-enter-active,
+.visible-leave-active {
+  transition: opacity var(--transition-duration-background) ease;
+}
+
+.visible-enter-from,
+.visible-leave-to {
+  opacity: 0;
+}
+
+.list {
+  transition: transform var(--transition-duration-list) ease;
+}
+
+.listHidden {
+  transform: translateY(-100%);
 }
 
 .listItem {
@@ -129,32 +172,5 @@ const scrollToCurrentImage = () => {
 
 .image {
   aspect-ratio: 4 / 3;
-}
-
-.visible-enter-active.container {
-  transition: opacity var(--transition-duration) ease;
-}
-
-.visible-leave-active.container {
-  transition: opacity var(--transition-duration) ease var(--transition-duration-half);
-}
-
-.visible-enter-active .list {
-  transition: transform var(--transition-duration-half) ease var(--transition-duration);
-}
-
-.visible-leave-active .list {
-  transition: transform var(--transition-duration-half) ease;
-}
-
-.visible-enter-from.container,
-.visible-leave-to.container {
-  opacity: 0;
-}
-
-.visible-enter-from .list,
-.visible-leave-to .list {
-  opacity: 1;
-  transform: translateY(-100%);
 }
 </style>
