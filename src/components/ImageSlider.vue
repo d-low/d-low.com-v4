@@ -23,6 +23,7 @@ const props = defineProps({
 
 const $emit = defineEmits(['hideImageSlider', 'imageSliderHidden']);
 
+const container = ref(null);
 const list = ref(null);
 const listItems = ref(null);
 
@@ -87,15 +88,11 @@ const handleCloseButtonClick = () => {
  * view.
  */
 const handleAfterEnter = () => {
-  list.value.classList.remove($style.listHidden);
+  const li = listItems.value[props.currentImage];
+  const { x } = li.getBoundingClientRect();
+  container.value.scrollLeft = x;
 
-  window.setTimeout(() => {
-    listItems.value[props.currentImage].scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-      inline: 'start',
-    });
-  }, transitionDurationList);
+  window.setTimeout(() => list.value.classList.remove($style.listHidden));
 };
 </script>
 
@@ -109,6 +106,7 @@ const handleAfterEnter = () => {
   >
     <div
       v-show="visible"
+      ref="container"
       :class="containerClass"
     >
       <button
