@@ -128,7 +128,7 @@ const handleAfterEnter = () => {
           <ImageLazyFade
             :class="imageClass"
             :loading="index === currentImage ? 'eager' : 'lazy'"
-            :src="image"
+            :src="image.href"
           />
         </li>
       </ul>

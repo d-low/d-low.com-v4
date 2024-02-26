@@ -51,7 +51,10 @@ const handleHideImageSlider = () => {
 
 const handleShowImageSlider = ({ currentImage, images }) => {
   imageSliderProps.currentImage = currentImage;
-  imageSliderProps.images = images;
+  imageSliderProps.images = images.map((image, index) => ({
+    caption: `${store.getImageCaption(image)} - ${index + 1} of ${images.length}`,
+    href: image,
+  }));
   imageSliderProps.visible = true;
 };
 </script>
