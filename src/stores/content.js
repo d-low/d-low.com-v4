@@ -48,6 +48,22 @@ export const useContentStore = defineStore('content', () => {
   };
 
   /**
+   * Remove initial date and index, remove the file extension, and then insert whitespace before
+   * each capital letter that appears before a lowercase letter.
+   * @example
+   * https://www.d-low.com/data/05-Colorado/18-Colorado-2023/03-Summer/03-Back_to_the_Vineyard-Jul_17_2023/2023-07-17-01-HeadingBackToTheVineyard.jpg -> Heading Back To The Vineyard
+   */
+  const getImageCaption = (url) => {
+    const parts = url.split('/');
+    const caption = parts[parts.length - 1]
+      .replace(/^\d\d\d\d-\d\d-\d\d-\d\d-/, '')
+      .replace(/\.\w+$/, '')
+      .replace(/([a-z])([A-Z])/g, '$1 $2');
+
+    return caption;
+  };
+
+  /**
    * Remove initial digits, split on the title/date separator and keeping both the title and the
    * date, and then replace underscores with white space.
    * @example
@@ -230,6 +246,7 @@ export const useContentStore = defineStore('content', () => {
 
     // Actions
     getLinks,
+    getImageCaption,
     getPostListingLinks,
     prettifyTitle,
     prettifyTitleOnly,
