@@ -4,6 +4,7 @@
  * - Slide down the list _after_ the current image is loaded
  */
 import { ref, useCssModule } from 'vue';
+import { useContentStore } from '@/stores/content';
 import ImageLazyFade from '@/components/ImageLazyFade.vue';
 
 const props = defineProps({
@@ -28,6 +29,7 @@ const list = ref(null);
 const listItems = ref(null);
 
 const $style = useCssModule();
+const store = useContentStore();
 const transitionDurationList = 250;
 
 const containerClass = [
@@ -60,6 +62,7 @@ const listClass = [
 ];
 
 const listItemClass = [
+  'tw-relative',
   'tw-w-screen',
   'tw-shrink-0',
   'tw-snap-start',
@@ -70,6 +73,17 @@ const imageClass = [
   'tw-h-full tw-mx-auto',
   $style.image,
 ];
+
+const imageCaptionClass = [
+  'tw-absolute tw-bottom-1 tw-left-1/2',
+  'tw-py-2 tw-px-6 tw-border',
+  'tw--translate-x-1/2',
+  'tw-font-bold tw-text-white tw-text-center tw-whitespace-nowrap',
+  'image-label-background',
+  $style.imageCaption,
+];
+
+const getImageCaption = (url, index) => `${store.getImageCaption(url)} - ${index + 1} of ${props.images.length}`;
 
 /**
  * When the close button is clicked slide the list up and then emit the hide-image-slider event so
@@ -130,6 +144,9 @@ const handleAfterEnter = () => {
             :loading="index === currentImage ? 'eager' : 'lazy'"
             :src="image.href"
           />
+          <span :class="imageCaptionClass">
+            {{ getImageCaption(image.href, index) }}
+          </span>
         </li>
       </ul>
     </div>
@@ -170,5 +187,9 @@ const handleAfterEnter = () => {
 
 .image {
   aspect-ratio: 4 / 3;
+}
+
+.imageCaption {
+  border-color: var(--baltic-sea) var(--black-pearl) var(--baltic-sea) var(--black-pearl);
 }
 </style>
