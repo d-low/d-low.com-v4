@@ -88,7 +88,7 @@ const viewAllImagesButtonClass = [
   props.heroImageAlignRight ? $style.viewAllImagesButtonRight : $style.viewAllImagesButtonLeft,
   'tw-cursor-pointer',
   'tw-font-bold tw-text-white',
-  $style.viewAllImagesButton,
+  'image-label-background',
   'tw-transition-opacity hover:tw-opacity-75',
 ];
 
@@ -191,10 +191,6 @@ const handleImageClick = (currentImage) => {
   .imageContainer {
     max-height: 31.25rem;
   }
-}
-
-.viewAllImagesButton {
-  background: radial-gradient(at top left, rgba(36 41 46 / 15%), rgba(36 41 46 / 85%));
 }
 
 .viewAllImagesButtonLeft {

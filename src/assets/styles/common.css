@@ -11,3 +11,7 @@
 .heading-text-shadow {
   text-shadow: 2px 3px 3px rgba(0 0 0 / 30%);
 }
+
+.image-label-background {
+  background: radial-gradient(at top left, rgba(36 41 46 / 15%), rgba(36 41 46 / 85%));
+}
