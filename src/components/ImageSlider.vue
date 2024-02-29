@@ -62,22 +62,17 @@ const listClass = [
 ];
 
 const listItemClass = [
-  'tw-relative',
-  'tw-w-screen',
+  'tw-flex tw-flex-col tw-justify-center tw-items-center',
+  'tw-w-screen tw-h-3/5 md:tw-h-4/5 lg:tw-h-full',
   'tw-shrink-0',
   'tw-snap-start',
   $style.listItem,
 ];
 
-const imageClass = [
-  'tw-h-full tw-mx-auto',
-  $style.image,
-];
+const imageClass = 'tw-h-4/5 tw-mx-auto';
 
 const imageCaptionClass = [
-  'tw-absolute tw-bottom-1 tw-left-1/2',
-  'tw-py-2 tw-px-6 tw-border',
-  'tw--translate-x-1/2',
+  'tw-mt-4 tw-py-2 tw-px-6 tw-border',
   'tw-font-bold tw-text-white tw-text-center tw-whitespace-nowrap',
   'image-label-background',
   $style.imageCaption,
@@ -142,6 +137,7 @@ const handleAfterEnter = () => {
           <ImageLazyFade
             :class="imageClass"
             :loading="index === currentImage ? 'eager' : 'lazy'"
+            object-fit="tw-object-contain"
             :src="image.href"
           />
           <span :class="imageCaptionClass">
@@ -180,13 +176,8 @@ const handleAfterEnter = () => {
 }
 
 .listItem {
-  height: 80vh;
   margin-left: 10vh;
-  margin-right: 10vh;;
-}
-
-.image {
-  aspect-ratio: 4 / 3;
+  margin-right: 10vh;
 }
 
 .imageCaption {

@@ -10,6 +10,10 @@ defineProps({
     type: String,
     default: 'lazy',
   },
+  objectFit: {
+    type: String,
+    default: 'tw-object-cover',
+  },
   src: {
     type: String,
     required: true,
@@ -41,7 +45,8 @@ onMounted(() => {
     ref="img"
     :loading="loading"
     :class="[
-      'tw-transition-opacity tw-duration-500 tw-object-cover',
+      'tw-transition-opacity tw-duration-500',
+      objectFit,
       imgOpacity,
     ]"
     :src="src"
