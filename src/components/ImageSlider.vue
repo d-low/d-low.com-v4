@@ -1,20 +1,27 @@
 <script setup>
 /**
  * @todo
+ * - Display arrow navigation buttons?
  * - Slide down the list _after_ the current image is loaded
+ * - Consolidate class names into single object for easier reference and to hide from view when
+ *   not being used.
+ * - The image caption is already passed in the images by the parent component so it doesn't need
+ *   to be generated here again using getImageCaption()! Oops.
+ * - Can the listHidden style to added to and removed from the listClass using Vue rather than
+ *   manually adding and removing it with classList.add() and classList.remove()? Maybe?
  */
-import { ref, useCssModule } from 'vue';
+import { ref, useCssModule, watch } from 'vue';
 import { useContentStore } from '@/stores/content';
 import ImageLazyFade from '@/components/ImageLazyFade.vue';
 
 const props = defineProps({
-  currentImage: {
-    type: Number,
-    default: 0,
-  },
   images: {
     type: Array,
     default() { return []; },
+  },
+  initialImage: {
+    type: Number,
+    default: 0,
   },
   visible: {
     type: Boolean,
@@ -23,6 +30,9 @@ const props = defineProps({
 });
 
 const $emit = defineEmits(['hideImageSlider', 'imageSliderHidden']);
+
+const currentImageIndex = ref(props.initialImage);
+let observer;
 
 const container = ref(null);
 const list = ref(null);
@@ -78,13 +88,27 @@ const imageCaptionClass = [
   $style.imageCaption,
 ];
 
-const getImageCaption = (url, index) => `${store.getImageCaption(url)} - ${index + 1} of ${props.images.length}`;
+const prevImage = () => {
+  const prevImageIndex = currentImageIndex.value - 1;
+
+  if (prevImageIndex >= 0) {
+    listItems.value[prevImageIndex].scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
+const nextImage = () => {
+  const nextImageIndex = currentImageIndex.value + 1;
+
+  if (nextImageIndex < listItems.value.length) {
+    listItems.value[nextImageIndex].scrollIntoView({ behavior: 'smooth' });
+  }
+};
 
 /**
  * When the close button is clicked slide the list up and then emit the hide-image-slider event so
  * the parent component hides the image slider.
  */
-const handleCloseButtonClick = () => {
+const closeSlider = () => {
   list.value.classList.add($style.listHidden);
 
   window.setTimeout(() => {
@@ -92,16 +116,61 @@ const handleCloseButtonClick = () => {
   }, transitionDurationList);
 };
 
+const handleKeyUp = (e) => {
+  if (e.key === 'ArrowLeft') {
+    prevImage();
+  } else if (e.key === 'ArrowRight') {
+    nextImage();
+  } else if (e.key === 'Escape') {
+    closeSlider();
+  }
+};
+
+const observeCallback = (entries) => {
+  const intersectingEntry = entries.find((entry) => entry.isIntersecting);
+
+  if (!intersectingEntry) {
+    return;
+  }
+
+  const { target } = intersectingEntry;
+  currentImageIndex.value = listItems.value.findIndex((listItem) => listItem === target);
+};
+
+const addNavigationEventHandlers = () => {
+  observer = new IntersectionObserver(observeCallback);
+  listItems.value.forEach((listItem) => observer.observe(listItem));
+  document.addEventListener('keyup', handleKeyUp);
+};
+
+const removeNavigationEventHandlers = () => {
+  listItems.value.forEach((listItem) => observer.unobserve(listItem));
+  observer.disconnect();
+  observer = null;
+  document.removeEventListener('keyup', handleKeyUp);
+};
+
+watch(() => props.visible, () => {
+  if (props.visible === false) {
+    removeNavigationEventHandlers();
+  }
+});
+
+const getImageCaption = (url, index) => `${store.getImageCaption(url)} - ${index + 1} of ${props.images.length}`;
+
 /**
  * After the background has been faded slide the list down and then scroll the image image into
  * view.
  */
 const handleAfterEnter = () => {
-  const li = listItems.value[props.currentImage];
+  const li = listItems.value[props.initialImage];
   const { x } = li.getBoundingClientRect();
   container.value.scrollLeft = x;
 
-  window.setTimeout(() => list.value.classList.remove($style.listHidden));
+  window.setTimeout(() => {
+    list.value.classList.remove($style.listHidden);
+    window.setTimeout(addNavigationEventHandlers, 500);
+  });
 };
 </script>
 
@@ -120,7 +189,7 @@ const handleAfterEnter = () => {
     >
       <button
         :class="closeButtonClass"
-        @click="handleCloseButtonClick"
+        @click="closeSlider"
       >
         <span :class="closeButtonTextClass">+</span>
       </button>
@@ -136,7 +205,7 @@ const handleAfterEnter = () => {
         >
           <ImageLazyFade
             :class="imageClass"
-            :loading="index === currentImage ? 'eager' : 'lazy'"
+            :loading="index === initialImage ? 'eager' : 'lazy'"
             object-fit="tw-object-contain"
             :src="image.href"
           />

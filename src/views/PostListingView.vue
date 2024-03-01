@@ -8,8 +8,8 @@ import PostListingLink from '@/components/PostListingLink.vue';
 import SiteHeader from '@/components/SiteHeader.vue';
 
 const imageSliderProps = reactive({
-  currentImage: 0,
   images: null,
+  initialImage: 0,
   showImageSlider: false,
 });
 const route = useRoute();
@@ -44,13 +44,13 @@ onMounted(() => window.setTimeout(() => {
 }, 250));
 
 const handleHideImageSlider = () => {
-  imageSliderProps.currentImage = 0;
+  imageSliderProps.initialImage = 0;
   imageSliderProps.images = null;
   imageSliderProps.visible = false;
 };
 
 const handleShowImageSlider = ({ currentImage, images }) => {
-  imageSliderProps.currentImage = currentImage;
+  imageSliderProps.initialImage = currentImage;
   imageSliderProps.images = images.map((image, index) => ({
     caption: `${store.getImageCaption(image)} - ${index + 1} of ${images.length}`,
     href: image,
