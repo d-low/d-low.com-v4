@@ -3,8 +3,6 @@
  * @todo
  * - Display arrow navigation buttons?
  * - Slide down the list _after_ the current image is loaded
- * - Consolidate class names into single object for easier reference and to hide from view when
- *   not being used.
  * - The image caption is already passed in the images by the parent component so it doesn't need
  *   to be generated here again using getImageCaption()! Oops.
  * - Can the listHidden style to added to and removed from the listClass using Vue rather than
@@ -42,51 +40,53 @@ const $style = useCssModule();
 const store = useContentStore();
 const transitionDurationList = 250;
 
-const containerClass = [
-  'tw-fixed tw-z-10 tw-inset-0',
-  'tw-w-screen tw-h-screen',
-  'tw-overflow-x-auto tw-overflow-y-hidden tw-overscroll-contain',
-  'tw-snap-mandatory tw-snap-x',
-  $style.container,
-];
+const classNames = {
+  container: [
+    'tw-fixed tw-z-10 tw-inset-0',
+    'tw-w-screen tw-h-screen',
+    'tw-overflow-x-auto tw-overflow-y-hidden tw-overscroll-contain',
+    'tw-snap-mandatory tw-snap-x',
+    $style.container,
+  ],
 
-const closeButtonClass = [
-  'tw-fixed',
-  'tw-top-2 tw-right-2 lg:tw-top-4 lg:tw-right-4',
-  'tw-w-12 tw-h-12',
-  'tw-border-2 tw-border-white tw-rounded-full',
-];
+  closeButton: [
+    'tw-fixed',
+    'tw-top-2 tw-right-2 lg:tw-top-4 lg:tw-right-4',
+    'tw-w-12 tw-h-12',
+    'tw-border-2 tw-border-white tw-rounded-full',
+  ],
 
-const closeButtonTextClass = [
-  'tw-inline-block',
-  'tw-text-white',
-  'tw-font-bold tw-text-3xl',
-  'tw-rotate-45',
-];
+  closeButtonText: [
+    'tw-inline-block',
+    'tw-text-white',
+    'tw-font-bold tw-text-3xl',
+    'tw-rotate-45',
+  ],
 
-const listClass = [
-  'tw-flex tw-items-center',
-  'tw-h-full',
-  $style.list,
-  $style.listHidden,
-];
+  list: [
+    'tw-flex tw-items-center',
+    'tw-h-full',
+    $style.list,
+    $style.listHidden,
+  ],
 
-const listItemClass = [
-  'tw-flex tw-flex-col tw-justify-center tw-items-center',
-  'tw-w-screen tw-h-3/5 md:tw-h-4/5 lg:tw-h-full',
-  'tw-shrink-0',
-  'tw-snap-start',
-  $style.listItem,
-];
+  listItem: [
+    'tw-flex tw-flex-col tw-justify-center tw-items-center',
+    'tw-w-screen tw-h-3/5 md:tw-h-4/5 lg:tw-h-full',
+    'tw-shrink-0',
+    'tw-snap-start',
+    $style.listItem,
+  ],
 
-const imageClass = 'tw-h-4/5 tw-mx-auto';
+  image: 'tw-h-4/5 tw-mx-auto',
 
-const imageCaptionClass = [
-  'tw-mt-4 tw-py-2 tw-px-6 tw-border',
-  'tw-font-bold tw-text-white tw-text-center tw-whitespace-nowrap',
-  'image-label-background',
-  $style.imageCaption,
-];
+  imageCaption: [
+    'tw-mt-4 tw-py-2 tw-px-6 tw-border',
+    'tw-font-bold tw-text-white tw-text-center tw-whitespace-nowrap',
+    'image-label-background',
+    $style.imageCaption,
+  ],
+};
 
 const prevImage = () => {
   const prevImageIndex = currentImageIndex.value - 1;
@@ -185,31 +185,31 @@ const handleAfterEnter = () => {
     <div
       v-show="visible"
       ref="container"
-      :class="containerClass"
+      :class="classNames.container"
     >
       <button
-        :class="closeButtonClass"
+        :class="classNames.closeButton"
         @click="closeSlider"
       >
-        <span :class="closeButtonTextClass">+</span>
+        <span :class="classNames.closeButtonText">+</span>
       </button>
       <ul
         ref="list"
-        :class="listClass"
+        :class="classNames.list"
       >
         <li
           v-for="(image, index) in images"
           :key="index"
           ref="listItems"
-          :class="listItemClass"
+          :class="classNames.listItem"
         >
           <ImageLazyFade
-            :class="imageClass"
+            :class="classNames.image"
             :loading="index === initialImage ? 'eager' : 'lazy'"
             object-fit="tw-object-contain"
             :src="image.href"
           />
-          <span :class="imageCaptionClass">
+          <span :class="classNames.imageCaption">
             {{ getImageCaption(image.href, index) }}
           </span>
         </li>
