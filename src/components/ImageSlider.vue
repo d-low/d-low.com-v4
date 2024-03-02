@@ -3,13 +3,10 @@
  * @todo
  * - Display arrow navigation buttons?
  * - Slide down the list _after_ the current image is loaded
- * - The image caption is already passed in the images by the parent component so it doesn't need
- *   to be generated here again using getImageCaption()! Oops.
  * - Can the listHidden style to added to and removed from the listClass using Vue rather than
  *   manually adding and removing it with classList.add() and classList.remove()? Maybe?
  */
 import { ref, useCssModule, watch } from 'vue';
-import { useContentStore } from '@/stores/content';
 import ImageLazyFade from '@/components/ImageLazyFade.vue';
 
 const props = defineProps({
@@ -37,7 +34,6 @@ const list = ref(null);
 const listItems = ref(null);
 
 const $style = useCssModule();
-const store = useContentStore();
 const transitionDurationList = 250;
 
 const classNames = {
@@ -156,8 +152,6 @@ watch(() => props.visible, () => {
   }
 });
 
-const getImageCaption = (url, index) => `${store.getImageCaption(url)} - ${index + 1} of ${props.images.length}`;
-
 /**
  * After the background has been faded slide the list down and then scroll the image image into
  * view.
@@ -210,7 +204,7 @@ const handleAfterEnter = () => {
             :src="image.href"
           />
           <span :class="classNames.imageCaption">
-            {{ getImageCaption(image.href, index) }}
+            {{ image.caption }}
           </span>
         </li>
       </ul>
