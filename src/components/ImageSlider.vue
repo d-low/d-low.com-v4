@@ -46,7 +46,7 @@ const classNames = {
   ],
 
   closeButton: [
-    'tw-fixed',
+    'tw-fixed tw-z-20',
     'tw-top-2 tw-right-2 lg:tw-top-4 lg:tw-right-4',
     'tw-w-12 tw-h-12',
     'tw-border-2 tw-border-white tw-rounded-full',
@@ -82,6 +82,38 @@ const classNames = {
     'image-label-background',
     $style.imageCaption,
   ],
+
+  imageButton: [
+    'tw-fixed tw-top-0',
+    'tw-w-20 md:tw-w-28 tw-h-full',
+    'tw-transition-opacity tw-opacity-0 hover:tw-opacity-50',
+  ],
+
+  nextImageButton: 'tw-right-0',
+
+  prevImageButton: 'tw-left-0',
+
+  imageIcon: [
+    'tw-absolute tw-top-1/2 tw-z-10',
+    'tw-w-3 tw-h-20 tw--mt-10',
+    'tw-transform',
+    'before:tw-absolute before:tw-top-1',
+    'before:tw-w-full',
+    'before:tw-bg-white',
+    'before:tw-rounded',
+    'before:tw-cursor-pointer',
+    'before:tw-h-1/2',
+    'after:tw-absolute after:tw-bottom-1',
+    'after:tw-w-full',
+    'after:tw-bg-white',
+    'after:tw-rounded',
+    'after:tw-cursor-pointer',
+    'after:tw-h-1/2',
+  ],
+
+  nextImageIcon: $style.nextImageIcon,
+
+  prevImageIcon: $style.prevImageIcon,
 };
 
 const prevImage = () => {
@@ -187,6 +219,18 @@ const handleAfterEnter = () => {
       >
         <span :class="classNames.closeButtonText">+</span>
       </button>
+      <button
+        :class="[classNames.imageButton, classNames.prevImageButton]"
+        @click="prevImage"
+      >
+        <span :class="[classNames.imageIcon, classNames.prevImageIcon]" />
+      </button>
+      <button
+        :class="[classNames.imageButton, classNames.nextImageButton]"
+        @click="nextImage"
+      >
+        <span :class="[classNames.imageIcon, classNames.nextImageIcon]" />
+      </button>
       <ul
         ref="list"
         :class="classNames.list"
@@ -245,5 +289,15 @@ const handleAfterEnter = () => {
 
 .imageCaption {
   border-color: var(--baltic-sea) var(--black-pearl) var(--baltic-sea) var(--black-pearl);
+}
+
+.nextImageIcon::before,
+.prevImageIcon::after {
+  transform: rotate(-20deg);
+}
+
+.nextImageIcon::after,
+.prevImageIcon::before {
+  transform: rotate(20deg);
 }
 </style>
