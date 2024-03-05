@@ -44,6 +44,10 @@ export default defineConfig({
       },
     },
   },
+  define: {
+    // SEE: https://vuejs.org/api/compile-time-flags#VUE_PROD_DEVTOOLS
+    __VUE_PROD_DEVTOOLS__: true,
+  },
   plugins: [
     vue(),
     eslintPlugin(),
