@@ -1,14 +1,14 @@
 # d-low.com-v4
 
-This template should help get you started developing with Vue 3 in Vite.
+This is the latest iteration of my personal website d-low.com which chronicles adventurous and less
+adventurous things I've done in my life. This iteration is merely a port of the previous design and
+functionality from React to Vue 3. I've been working in Vue professionally for 4 or 5 years now, so
+when I began to realize my personal website was dated and running on legacy libraries and code, I
+took the opportunity to port it to Vue 3.
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+d-low.com is a file based blog. All configuration for the site is loaded from [content.js](https://d-low.com/data/content.js)
+which is dynamically generated the file system layout in the `/data` directory by the
+[data/generate_content.rb](data/generate_content.rb) script.
 
 ## Project Setup
 
@@ -28,7 +28,7 @@ npm run dev
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Lint with [ESLint](https://eslint.org/) and [Stylelint](https://stylelint.io/)
 
 ```sh
 npm run lint
