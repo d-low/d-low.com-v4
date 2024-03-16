@@ -235,4 +235,9 @@ const handleImageClick = (currentImage) => {
   line-height: 1.5rem;
   margin-bottom: 1rem;
 }
+
+.textContainer p a {
+  font-weight: 700;
+  text-decoration: underline;
+}
 </style>
