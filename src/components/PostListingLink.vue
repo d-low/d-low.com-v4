@@ -94,7 +94,7 @@ const viewAllImagesButtonClass = [
 
 const textContainerClass = computed(() => ([
   'tw-relative',
-  'tw-w-11/12 tw-max-h-80',
+  'tw-w-11/12',
   'tw-mx-auto tw-mb-4',
   'tw-overflow-hidden',
   'tw-transition-all',
@@ -201,6 +201,11 @@ const handleImageClick = (currentImage) => {
   border-color: var(--baltic-sea) var(--black-pearl) var(--black-pearl) var(--baltic-sea);
 }
 
+.textContainer {
+  max-height: 20rem;
+  transition: max-height 750ms ease-in-out;
+}
+
 .textContainer ::after {
   background: linear-gradient(to bottom, rgba(249 249 249 / 0%), rgba(249 249 249 / 100%) 100%);
   bottom: 0;
@@ -210,6 +215,10 @@ const handleImageClick = (currentImage) => {
   right: 0;
   text-align: right;
   width: 100%;
+}
+
+.textContainerExpanded {
+  max-height: 100rem;
 }
 
 .textContainerExpanded ::after {
